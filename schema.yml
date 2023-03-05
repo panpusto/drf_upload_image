@@ -1,0 +1,177 @@
+openapi: 3.0.3
+info:
+  title: Upload Image API
+  version: 1.0.0
+  description: REST API for uploading images
+paths:
+  /api/v1/expiring_links/:
+    get:
+      operationId: expiring_links_list
+      description: Displays list of expiring links and allow to generate new links.
+      tags:
+      - expiring_links
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExpiringLinkList'
+          description: ''
+    post:
+      operationId: expiring_links_create
+      description: Displays list of expiring links and allow to generate new links.
+      tags:
+      - expiring_links
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExpiringLinkCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ExpiringLinkCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ExpiringLinkCreate'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpiringLinkCreate'
+          description: ''
+  /api/v1/expiring_links/{token}/:
+    get:
+      operationId: expiring_links_retrieve
+      description: Displays details of expiring link.
+      parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+      tags:
+      - expiring_links
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpiringLinkDetail'
+          description: ''
+  /api/v1/images/:
+    get:
+      operationId: images_list
+      description: Displays list of users images and allows to upload new images.
+      tags:
+      - images
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ImageList'
+          description: ''
+    post:
+      operationId: images_create
+      description: Displays list of users images and allows to upload new images.
+      tags:
+      - images
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImageCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ImageCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ImageCreate'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageCreate'
+          description: ''
+components:
+  schemas:
+    ExpiringLinkCreate:
+      type: object
+      properties:
+        image:
+          type: string
+          format: uuid
+        time_to_expired:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+      required:
+      - image
+      - time_to_expired
+    ExpiringLinkDetail:
+      type: object
+      properties:
+        link:
+          type: string
+          maxLength: 255
+      required:
+      - link
+    ExpiringLinkList:
+      type: object
+      properties:
+        link:
+          type: string
+          maxLength: 255
+      required:
+      - link
+    ImageCreate:
+      type: object
+      properties:
+        image:
+          type: string
+          format: uri
+        get_links_to_display:
+          type: string
+          readOnly: true
+      required:
+      - get_links_to_display
+      - image
+    ImageList:
+      type: object
+      properties:
+        image:
+          type: string
+          format: uri
+      required:
+      - image
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
