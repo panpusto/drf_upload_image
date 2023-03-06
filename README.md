@@ -4,13 +4,10 @@ The easiest way to start project locally is to run docker-compose.
 1. Clone this repo.
 2. Change directory to project folder.
 3. Run `docker-compose up -d --build`
-4. Probably it will be necessary to make database migration: 
-   - `docker-compose exec web python3 manage.py makemigrations`
-   - `docker-compose exec web python3 manage.py migrate`
-5. Create superuser:
+4. Create superuser:
    - `docker-compose exec web python3 manage.py createsuperuser`
-6. Type admin username, email and password.
-7. Now you can visit: `127.0.0.1:8000/admin` or `localhost:8000/admin` and log in to admin panel.
+5. Type admin username, email and password.
+6. Now you can visit: `127.0.0.1:8000/admin` or `localhost:8000/admin` and log in to admin panel.
 
 
 ### Available paths:
